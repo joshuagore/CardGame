@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using MyrddinsOwl.CardGame.Shared;
 using MyrddinsOwl.Core;
 using TMPro;
 using UnityEngine;
@@ -10,9 +11,12 @@ namespace MyrddinsOwl.CardGame.ViewControllers
     {
         private TextMeshProUGUI _fps;
         private bool _updateLoopRunning;
+        private readonly ILogService _logService;
 
         public FpsViewController(TextMeshProUGUI fps)
         {
+            _logService = new UnityLogger();
+            
             _fps = fps;
             
             Init();
@@ -31,8 +35,9 @@ namespace MyrddinsOwl.CardGame.ViewControllers
                 var ms = Time.deltaTime * 1000;
 
                 _fps.text = (1000 / ms).ToString("N0");
-                
+                _logService.Info("Start of wait");
                 await Task.Delay(500);
+                _logService.Info("End of wait");
             }
         }
 
