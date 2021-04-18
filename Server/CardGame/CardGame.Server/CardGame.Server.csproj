@@ -12,15 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Zenject, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libraries\Zenject.dll</HintPath>
-    </Reference>
-    <Reference Include="Zenject-Signals, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libraries\Zenject-Signals.dll</HintPath>
-    </Reference>
-    <Reference Include="Zenject-usage, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libraries\Zenject-usage.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
 </Project>

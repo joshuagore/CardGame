@@ -9,7 +9,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>MyrddinsOwl.CardGame.Shared</RootNamespace>
         <AssemblyName>MyrddinsOwl.CardGame.Shared</AssemblyName>
-        <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,7 +36,7 @@
         <Reference Include="System.Core" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ILogService.cs" />
+        <Compile Include="ILogger.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

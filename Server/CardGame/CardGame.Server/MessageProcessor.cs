@@ -4,18 +4,18 @@ namespace MyrddinsOwl.CardGame.Server
 {
     public class MessageProcessor
     {
-        private readonly ILogService _logService;
+        private readonly ILogger _logger;
         
-        public MessageProcessor(ILogService logService)
+        public MessageProcessor(ILogger logger)
         {
-            _logService = logService;
+            _logger = logger;
         }
 
         public void DoTheThing()
         {
-            _logService.Info("Some Info Message");
-            _logService.Warning("Some Warning Message");
-            _logService.Error("Some Error Message");
+            _logger.Info("Some Info Message");
+            _logger.Warning("Some Warning Message");
+            _logger.Error("Some Error Message");
         }
     }
 }

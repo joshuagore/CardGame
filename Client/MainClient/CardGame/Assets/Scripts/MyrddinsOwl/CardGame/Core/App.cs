@@ -1,31 +1,50 @@
-using MyrddinsOwl.CardGame.ViewControllers;
+using System.Threading.Tasks;
+using MyrddinsOwl.CardGame.Debug;
 using MyrddinsOwl.Core;
 using UnityEngine;
+using ILogger = MyrddinsOwl.CardGame.Shared.ILogger;
 
 namespace MyrddinsOwl.CardGame.Core
 {
-    public class App : CheckingBehavior
+    public sealed class App
     {
-        [SerializeField] private DebugHud _debugHud;
-        [SerializeField] private StartHud _startHud;
+        private readonly ILogger _logger;
+        private readonly MvcFactory _mvcFactory;
+        private readonly AssetLoader _assetLoader;
+        private readonly IContainer _container;
 
-        protected override void Awake()
-        {             
-            base.Awake();
-            
-            //Add App Initialization Code here
-            StartDebugHud();
-        }
-        
-        protected override void ValidateFields()
+        private DebugHudController _debugHudController;
+        private StartScreen _startScreen;
+
+        public App(IContainer container, ILogger logger, MvcFactory mvcFactory, AssetLoader assetLoader )
         {
-            LogIfMissing(_debugHud, nameof(_debugHud));
-            LogIfMissing(_startHud, nameof(_startHud));
+            _container = container;
+            _logger = logger;
+            _mvcFactory = mvcFactory;
+            _assetLoader = assetLoader;
+
+            _logger.Info("Initialized App and starting game");
+            StartGame();
         }
 
-        private void StartDebugHud()
+        private async void StartGame()
         {
-            _debugHud.Init();
+            await Task.WhenAll(CreateDebugHud(), CreateStartScreen());
+        }
+
+        private async Task CreateDebugHud()
+        {
+            _logger.Info("Creating DebugHud");
+            var gameObject = await _assetLoader.Load<GameObject>("Prefabs/Debug");
+            var _debugHudView = _container.InstantiatePrefabForComponent<DebugHudView>(gameObject);
+            _debugHudController = _mvcFactory.CreateController<DebugHudController, DebugHudView>(_debugHudView);
+        }
+
+        private async Task CreateStartScreen()
+        {
+            _logger.Info("CreatingStartScreen");
+            var gameObject = await _assetLoader.Load<GameObject>("Prefabs/Entry");
+            _startScreen = _container.InstantiatePrefabForComponent<StartScreen>(gameObject);
         }
     }
 }

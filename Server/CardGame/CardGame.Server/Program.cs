@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MyrddinsOwl.CardGame.Server.Core;
+using Unity;
 
 namespace MyrddinsOwl.CardGame.Server
 {
@@ -7,10 +8,15 @@ namespace MyrddinsOwl.CardGame.Server
     {
         static async Task Main(string[] args)
         {
+            var context = new Context();
+            context.ConfigureContainer();
+            context.RegisterTypes();
 
-            var _installer = new ServerContext();
-            _installer.InstallBindings();
-            await _installer.Run();
+            var server = context.Container.Resolve<Core.Server>();
+            server.BindMore();
+            server.ResolveExtraThing();
+            
+            await server.Run();
         }
     }
 }
