@@ -5,7 +5,13 @@ namespace MyrddinsOwl.ZenjectSetup
 {
     public class AppContext : SceneContext
     {
-        public void Init()
+        private void Awake()
+        {
+            PostResolve += Init;
+            base.Awake();
+        }
+        
+        private void Init()
         {
             Container.Resolve<App>();
         }

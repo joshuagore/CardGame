@@ -1,22 +1,15 @@
+﻿using MyrddinsOwl.CardGame.Shared;
 using MyrddinsOwl.Core;
-using TMPro;
-using UnityEngine;
 
-namespace MyrddinsOwl.CardGame.Debug
+namespace MyrddinsOwl.CardGame.StartScreen
 {
-    public sealed class DebugHudView : View<DebugHudModel>
+    public class StartScreenController : Controller<StartScreenView, StartScreenModel>
     {
-        [SerializeField] public TextMeshProUGUI _fps;
-        [SerializeField] private TextMeshProUGUI _server;
+        private readonly ILogger _logger;
 
-        private void SetFpsText(string value)
+        public StartScreenController(ILogger logger)
         {
-            _fps.text = value;
-        }
-        
-        private void SetServerText(string value)
-        {
-            _server.text = value;
+            _logger = logger;
         }
 
         protected override void OnReady()
@@ -24,24 +17,32 @@ namespace MyrddinsOwl.CardGame.Debug
             SubscribeEvents();
             base.OnReady();
         }
+        
+        private void OnPlayClicked()
+        {
+            UnsubscribeEvents();
+            _logger.Info("Play Now!");
+        }
 
         private void SubscribeEvents()
         {
-            Model.FpsChanged += SetFpsText;
-            Model.ServerChanged += SetServerText;
+            View.PlayClicked += OnPlayClicked;
         }
-        
+
         private void UnsubscribeEvents()
         {
-            Model.FpsChanged -= SetFpsText;
-            Model.ServerChanged -= SetServerText;
+            View.PlayClicked -= OnPlayClicked;
+        }
+        private void DisposeManaged()
+        {
+            UnsubscribeEvents();
         }
 
         #region Dispose
         // To detect redundant calls
         private bool _disposed;
 
-        ~DebugHudView() => Dispose(false);
+        ~StartScreenController() => Dispose(false);
 
         // Protected implementation of Dispose pattern.
         protected override void Dispose(bool disposing)
@@ -54,13 +55,12 @@ namespace MyrddinsOwl.CardGame.Debug
             if (disposing)
             {
                 // dispose managed state (managed objects).
-                UnsubscribeEvents();
+                DisposeManaged();
             }
 
             // free unmanaged resources (unmanaged objects) and override a finalizer below.
             // set large fields to null.
             _disposed = true;
-
             // Call the base class implementation.
             base.Dispose(disposing);
         }

@@ -1,47 +1,42 @@
+using System;
 using MyrddinsOwl.Core;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace MyrddinsOwl.CardGame.Debug
+namespace MyrddinsOwl.CardGame.StartScreen
 {
-    public sealed class DebugHudView : View<DebugHudModel>
+    public class StartScreenView : View<StartScreenModel>
     {
-        [SerializeField] public TextMeshProUGUI _fps;
-        [SerializeField] private TextMeshProUGUI _server;
+        [SerializeField] private Button _play;
 
-        private void SetFpsText(string value)
-        {
-            _fps.text = value;
-        }
-        
-        private void SetServerText(string value)
-        {
-            _server.text = value;
-        }
+        public event Action PlayClicked;
 
         protected override void OnReady()
         {
-            SubscribeEvents();
+            SubscribeListeners();
             base.OnReady();
         }
-
-        private void SubscribeEvents()
+        
+        private void OnPlayClicked()
         {
-            Model.FpsChanged += SetFpsText;
-            Model.ServerChanged += SetServerText;
+            PlayClicked?.Invoke();
+        }
+        
+        private void SubscribeListeners()
+        {
+            _play.onClick.AddListener(OnPlayClicked);
         }
         
         private void UnsubscribeEvents()
         {
-            Model.FpsChanged -= SetFpsText;
-            Model.ServerChanged -= SetServerText;
+            _play.onClick.RemoveListener(OnPlayClicked);
         }
 
         #region Dispose
         // To detect redundant calls
         private bool _disposed;
 
-        ~DebugHudView() => Dispose(false);
+        ~StartScreenView() => Dispose(false);
 
         // Protected implementation of Dispose pattern.
         protected override void Dispose(bool disposing)

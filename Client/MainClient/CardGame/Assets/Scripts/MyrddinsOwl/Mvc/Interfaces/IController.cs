@@ -2,9 +2,16 @@
 
 namespace MyrddinsOwl.Mvc.Interfaces
 {
-    public interface IController<T> : IDisposable  where T : IView
+    public interface IController<TView> : IDisposable  where TView : IView
     {
-        void BindView(T view);
-        public T View { get; set; }
+        void BindView(TView view);
+        void Init();
+        
+
+    }
+    
+    public interface IController<TView, TModel> : IController<TView> where TView : IView<TModel> where TModel : IModel
+    {
+        void BindModel(TModel model);
     }
 }

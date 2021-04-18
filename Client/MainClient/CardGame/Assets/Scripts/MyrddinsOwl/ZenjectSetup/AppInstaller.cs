@@ -1,5 +1,6 @@
 using MyrddinsOwl.CardGame.Core;
 using MyrddinsOwl.CardGame.Debug;
+using MyrddinsOwl.CardGame.StartScreen;
 using MyrddinsOwl.Core;
 using Zenject;
 
@@ -11,7 +12,8 @@ namespace MyrddinsOwl.ZenjectSetup
         {
             SystemInstaller.Install(Container);
             Container.Bind<App>().AsSingle();
-            DebugInstaller.Install(Container);
+            DebugHudInstaller.Install(Container);
+            StartScreenInstaller.Install(Container);
         }
     }
 }

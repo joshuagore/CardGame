@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using MyrddinsOwl.CardGame.Debug;
+using MyrddinsOwl.CardGame.StartScreen;
 using MyrddinsOwl.Core;
 using UnityEngine;
 using ILogger = MyrddinsOwl.CardGame.Shared.ILogger;
@@ -14,7 +15,7 @@ namespace MyrddinsOwl.CardGame.Core
         private readonly IContainer _container;
 
         private DebugHudController _debugHudController;
-        private StartScreen _startScreen;
+        private StartScreenController _startScreenController;
 
         public App(IContainer container, ILogger logger, MvcFactory mvcFactory, AssetLoader assetLoader )
         {
@@ -36,15 +37,18 @@ namespace MyrddinsOwl.CardGame.Core
         {
             _logger.Info("Creating DebugHud");
             var gameObject = await _assetLoader.Load<GameObject>("Prefabs/Debug");
-            var _debugHudView = _container.InstantiatePrefabForComponent<DebugHudView>(gameObject);
-            _debugHudController = _mvcFactory.CreateController<DebugHudController, DebugHudView>(_debugHudView);
+            var debugHudView = _container.InstantiatePrefabForComponent<DebugHudView>(gameObject);
+            var debugHudModel = new DebugHudModel();
+            _debugHudController = _mvcFactory.CreateController<DebugHudController, DebugHudView, DebugHudModel>(debugHudView, debugHudModel);
         }
 
         private async Task CreateStartScreen()
         {
             _logger.Info("CreatingStartScreen");
             var gameObject = await _assetLoader.Load<GameObject>("Prefabs/Entry");
-            _startScreen = _container.InstantiatePrefabForComponent<StartScreen>(gameObject);
+            var startScreenView = _container.InstantiatePrefabForComponent<StartScreenView>(gameObject);
+            var startScreenModel = new StartScreenModel();
+            _startScreenController = _mvcFactory.CreateController<StartScreenController, StartScreenView, StartScreenModel>(startScreenView, startScreenModel);
         }
     }
 }
