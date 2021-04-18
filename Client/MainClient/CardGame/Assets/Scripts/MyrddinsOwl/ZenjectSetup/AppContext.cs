@@ -5,7 +5,7 @@ namespace MyrddinsOwl.ZenjectSetup
 {
     public class AppContext : SceneContext
     {
-        private void Awake()
+        private new void Awake()
         {
             PostResolve += Init;
             base.Awake();
